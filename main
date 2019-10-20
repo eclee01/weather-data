@@ -1,0 +1,100 @@
+#include <iostream>
+#include <iomanip>
+
+enum Month {
+    JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY,
+    AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
+};
+
+struct weatherData
+{
+    double rainfall;
+    double maxTemp;
+    double minTemp;
+    double averageTemp;
+    std::string month;
+    int year;
+};
+
+int main()
+{
+    std::string months[12] = { "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
+                               "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER" };
+    weatherData yearData[12];
+    double temp, yearRainfall = 0, yearTemp = 0;
+    int max = 0, min = 0;
+    Month month;
+    
+    std::cout << "Weather Data for 2018\n";
+    
+    for (month = JANUARY; month <= DECEMBER; month = static_cast<Month>(month + 1))
+    {
+        yearData[month].month = months[month];
+        yearData[month].year = 2018;
+    }
+    
+    for (month = JANUARY; month <= DECEMBER; month = static_cast<Month>(month + 1))
+    {
+        std::cout << "\nEnter " << yearData[month].month << "'s data\n";
+        std::cout << "Total Rainfall (in): ";
+        std::cin >> yearData[month].rainfall;
+        
+        temp = -101;
+        while (temp < -100 || temp > 140) {
+            std::cout << "High Temperature (*F): ";
+            std::cin >> temp;
+        }
+        yearData[month].maxTemp = temp;
+        
+        temp = 141;
+        while (temp < -100 || temp > 140) {
+            std::cout << "Low Temperature (*F): ";
+            std::cin >> temp;
+        }
+        yearData[month].minTemp = temp;
+        
+        yearData[month].averageTemp = (yearData[month].maxTemp + yearData[month].minTemp) / 2;
+        
+    }
+    
+    std::cout << "Here is 2018's weather data\n";
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
+    
+    for (month = JANUARY; month <= DECEMBER; month = static_cast<Month>(month + 1))
+    {
+        std::cout << "\nThis is the Weather Data for " << yearData[month].month;
+        std::cout << " " << yearData[month].year << ".\n";
+        std::cout << "Total rainfall: " << yearData[month].rainfall << " in";
+        std::cout << "\nHigh temperature: " << yearData[month].maxTemp << " F";
+        std::cout << "\nLow temperature: " << yearData[month].minTemp << " F";
+        std::cout << "\nAverage Temperature: " << yearData[month].averageTemp << " F";
+        std::cout << std::endl;
+    }
+    
+    for (month = JANUARY; month <= DECEMBER; month = static_cast<Month>(month + 1))
+    {
+        yearRainfall += yearData[month].rainfall;
+        yearTemp += yearData[month].averageTemp;
+        
+        if (yearData[month].minTemp < yearData[min].minTemp) {
+            min = month;
+        }
+        
+        if (yearData[month].maxTemp > yearData[max].maxTemp) {
+            max = month;
+        }
+    }
+    
+    yearRainfall;
+    yearTemp /= 12;
+    
+    std::cout << "\nTotal rainfall: " << yearRainfall << "\n";
+    std::cout << "Average monthly rainfall: " << yearRainfall / 12 << " in\n";
+    std::cout << "Average monthly temperature: " << yearTemp << " *F\n";
+    std::cout << "Highest temperature: " << yearData[max].maxTemp << " *F";
+    std::cout << " in " << months[max] << "\n";
+    std::cout << "Lowest temperature: " << yearData[min].minTemp << " *F";
+    std::cout << " in " << months[min] << "\n";
+
+    return 0;
+}
